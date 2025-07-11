@@ -1,0 +1,27 @@
+[
+  {
+    "id": "c1",
+    "text": "Invent a new holiday and describe how people celebrate it.",
+    "category": "creative"
+  },
+  {
+    "id": "c2",
+    "text": "Describe your dream workspace — be as detailed as possible.",
+    "category": "reflective"
+  },
+  {
+    "id": "c3",
+    "text": "Come up with a product that combines two things people wouldn’t expect.",
+    "category": "fun"
+  },
+  {
+    "id": "c4",
+    "text": "Write a fake review for an imaginary app that does something weird.",
+    "category": "humor"
+  },
+  {
+    "id": "c5",
+    "text": "If boredom were a monster, what would it look like and how would you defeat it?",
+    "category": "imaginative"
+  }
+]
