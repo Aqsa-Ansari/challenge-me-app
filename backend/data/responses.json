@@ -1,74 +1,142 @@
 [
   {
-    "id": "r1",
-    "challengeId": "c1",
-    "text": "Holiday: Pillow Fight Day! Everyone brings pillows to parks and battles it out.",
-    "rating": 4
+    "id": "1720893801001",
+    "challengeId": "1720893721001",
+    "text": "Autumn whispers gold, leaves fall in graceful silence, peace settles within.",
+    "rating": 5,
+    "votes": 3
   },
   {
-    "id": "r2",
-    "challengeId": "c2",
-    "text": "A workspace with big windows, tons of plants, and a built-in coffee machine.",
-    "rating": 5
+    "id": "1720893801002",
+    "challengeId": "1720893721001",
+    "text": "Spring sings softly through blossoms and breeze, a fresh breath of life.",
+    "rating": 4,
+    "votes": 2
   },
   {
-    "id": "r3",
-    "challengeId": "c3",
-    "text": "A backpack that dispenses hot pizza slices — yes, I’d buy it.",
-    "rating": 3
+    "id": "1720893801003",
+    "challengeId": "1720893721002",
+    "text": "Planet Luma glows with purple oceans, floating cities, and starlit trees.",
+    "rating": 3,
+    "votes": 1
   },
   {
-    "id": "r4",
-    "challengeId": "c1",
-    "text": "National Do-Nothing Day — where the only goal is to just rest.",
-    "rating": 5
+    "id": "1720893801004",
+    "challengeId": "1720893721002",
+    "text": "Zenthra spins slowly, inhabited by clouds and whispering winds.",
+    "rating": 4,
+    "votes": 3
   },
   {
-    "id": "r5",
-    "challengeId": "c5",
-    "text": "The boredom monster is gray and slow. I defeat it by learning something new.",
-    "rating": 4
+    "id": "1720893801005",
+    "challengeId": "1720893721003",
+    "text": "Cake Day! Everyone bakes a cake and shares it with neighbors.",
+    "rating": 5,
+    "votes": 4
   },
   {
-    "id": "r6",
-    "challengeId": "c3",
-    "text": "A coffee mug that charges your phone — best of both worlds.",
-    "rating": 2
+    "id": "1720893801006",
+    "challengeId": "1720893721003",
+    "text": "Backward Day: People walk and talk backwards all day for laughs.",
+    "rating": 3,
+    "votes": 2
   },
   {
-    "id": "r7",
-    "challengeId": "c1",
-    "text": "Ice Cream for Breakfast Day — enough said.",
-    "rating": 5
+    "id": "1720893801007",
+    "challengeId": "1720893721004",
+    "text": "I downloaded DreamNap — it plays dreams in HD while you nap.",
+    "rating": 4,
+    "votes": 2
   },
   {
-    "id": "r8",
-    "challengeId": "c2",
-    "text": "Desk by a lake, surrounded by silence and fast Wi-Fi.",
-    "rating": 4
+    "id": "1720893801008",
+    "challengeId": "1720893721004",
+    "text": "App: GhostNot — lets you text ghosts and get spooky replies!",
+    "rating": 5,
+    "votes": 3
   },
   {
-    "id": "r9",
-    "challengeId": "c5",
-    "text": "It looks like static on an old TV and vanishes when I go outside.",
-    "rating": 3
+    "id": "1720893801009",
+    "challengeId": "1720893721005",
+    "text": "A room filled with light, a stream nearby, and quiet ideas flowing.",
+    "rating": 4,
+    "votes": 1
   },
   {
-    "id": "r10",
-    "challengeId": "c3",
-    "text": "Shoes that change color based on your mood.",
-    "rating": 4
+    "id": "1720893801010",
+    "challengeId": "1720893721005",
+    "text": "A workspace surrounded by books, soft echoes, and forest breeze.",
+    "rating": 5,
+    "votes": 3
   },
   {
-    "id": "r11",
-    "challengeId": "c2",
-    "text": "A bright room, big whiteboard, and a keyboard that clicks perfectly.",
-    "rating": 5
+    "id": "1720893801011",
+    "challengeId": "1720893721006",
+    "text": "\"Don't toast me,\" said the cat. \"You’re always so grumpy,\" said the toaster.",
+    "rating": 4,
+    "votes": 2
   },
   {
-    "id": "r12",
-    "challengeId": "c5",
-    "text": "It’s like a foggy blob. I destroy it with loud music and dancing.",
-    "rating": 4
+    "id": "1720893801012",
+    "challengeId": "1720893721006",
+    "text": "\"You have crumbs in your slot,\" the cat purred. \"And you have fur in my gears!\"",
+    "rating": 3,
+    "votes": 1
+  },
+  {
+    "id": "1720893801013",
+    "challengeId": "1720893721007",
+    "text": "Blorft (adj.): The overwhelmed yet determined feeling right before a big task.",
+    "rating": 5,
+    "votes": 3
+  },
+  {
+    "id": "1720893801014",
+    "challengeId": "1720893721007",
+    "text": "Snarp (verb): To accidentally spill a drink while laughing.",
+    "rating": 4,
+    "votes": 2
+  },
+  {
+    "id": "1720893801015",
+    "challengeId": "1720893721008",
+    "text": "Humans experience 'boredom' when stimulus levels drop below optimal function.",
+    "rating": 5,
+    "votes": 4
+  },
+  {
+    "id": "1720893801016",
+    "challengeId": "1720893721008",
+    "text": "Earthlings grow restless without novelty — their minds crave color and noise.",
+    "rating": 4,
+    "votes": 2
+  },
+  {
+    "id": "1720893801017",
+    "challengeId": "1720893721009",
+    "text": "Morning brew in hand, Steam rises like whispered dreams — Fuel for the day’s storm.",
+    "rating": 5,
+    "votes": 3
+  },
+  {
+    "id": "1720893801018",
+    "challengeId": "1720893721009",
+    "text": "Black river flows hot, Wakes the soul with bitter notes, Peace in every sip.",
+    "rating": 4,
+    "votes": 2
+  },
+  {
+    "id": "1720893801019",
+    "challengeId": "1720893721010",
+    "text": "Captain Kindly always said thank you before knocking villains out.",
+    "rating": 4,
+    "votes": 3
+  },
+  {
+    "id": "1720893801020",
+    "challengeId": "1720893721010",
+    "text": "PoliteMan apologizes before kicking down doors. Crime rates drop anyway.",
+    "rating": 5,
+    "votes": 4
   }
 ]

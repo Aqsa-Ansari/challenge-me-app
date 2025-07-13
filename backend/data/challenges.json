@@ -1,27 +1,52 @@
 [
   {
-    "id": "c1",
-    "text": "Invent a new holiday and describe how people celebrate it.",
+    "id": "1720893721001",
+    "text": "Write a short poem about your favorite season.",
     "category": "creative"
   },
   {
-    "id": "c2",
-    "text": "Describe your dream workspace — be as detailed as possible.",
-    "category": "reflective"
+    "id": "1720893721002",
+    "text": "Describe a fictional planet in 3 sentences.",
+    "category": "imaginative"
   },
   {
-    "id": "c3",
-    "text": "Come up with a product that combines two things people wouldn’t expect.",
+    "id": "1720893721003",
+    "text": "Invent a new holiday and explain how people celebrate it.",
     "category": "fun"
   },
   {
-    "id": "c4",
-    "text": "Write a fake review for an imaginary app that does something weird.",
+    "id": "1720893721004",
+    "text": "Write a tweet-sized story with a twist ending.",
+    "category": "storytelling"
+  },
+  {
+    "id": "1720893721005",
+    "text": "Describe your ideal workspace without naming any furniture.",
+    "category": "reflective"
+  },
+  {
+    "id": "1720893721006",
+    "text": "Write a conversation between a cat and a toaster.",
     "category": "humor"
   },
   {
-    "id": "c5",
-    "text": "If boredom were a monster, what would it look like and how would you defeat it?",
+    "id": "1720893721007",
+    "text": "Come up with a new word and define it.",
+    "category": "wordplay"
+  },
+  {
+    "id": "1720893721008",
+    "text": "Explain boredom as if you're an alien visiting Earth.",
     "category": "imaginative"
+  },
+  {
+    "id": "1720893721009",
+    "text": "Write a haiku about coffee.",
+    "category": "poetry"
+  },
+  {
+    "id": "1720893721010",
+    "text": "Describe a superhero whose only power is extreme politeness.",
+    "category": "creative"
   }
 ]
