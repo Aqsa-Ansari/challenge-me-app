@@ -12,6 +12,7 @@ const fs = require("fs");
 
 
 const app = express();
+// app.use(json());
 
 // GET    /api/challenges/random           → Get a random challenge
 // GET    /api/challenges/:id/responses    → Get responses for a specific challenge
@@ -25,8 +26,8 @@ app.get('/', (req, res) => {
   res.send('app is up')
 })
 
-app.get('/api/challenges/random', (req, res) => {
 
+app.get('/api/challenges/random', (req, res) => {
     //reading and parsing all challenges from the json file
     fs.readFile("./data/challenges.json", (error, data) => {
         if(error){
@@ -46,7 +47,6 @@ app.get('/api/challenges/random', (req, res) => {
 
 
 app.get('/api/challenges/:id/responses', (req, res) => {
-
     // reading and parsing all responses from file
     fs.readFile("./data/responses.json", (error, data) => {
         if(error){
@@ -59,16 +59,28 @@ app.get('/api/challenges/:id/responses', (req, res) => {
             const filteredResponses = responses.filter(response => response.challengeId === req.params.id)
             
             res.send(filteredResponses)
-
         }
     })  
 })
 
 
-// app.post('/api/responses', (req, res) => {
-//     const dummyResponse = {}
+app.post('/api/responses', (req, res) => {
+    const newId = Date.now().toString();
+    const newResponse = {id: newId, text: req.body.jawab, challengeId: req.body.sawal, rating:0}
 
-// })
+    fs.readFile("./data/responses.json", (error, data) => {
+        if(error){
+            //error handling
+        }
+        else{
+            const responses = JSON.parse(data)
+            responses.push(newResponse)
+            
+            //write all to same file
+            res.status(200).send(newId)
+        }
+    })  
+})
 
 
 const port = process.env.PORT || 3000
