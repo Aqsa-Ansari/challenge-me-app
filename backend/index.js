@@ -5,10 +5,10 @@
 
 
 //// if type:commonjs in package.json file, then
-const { deepStrictEqual } = require("assert");
 const express = require("express");
 require("dotenv").config();
 const fs = require("fs");
+const Joi = require('joi');
 
 
 const app = express();
@@ -70,10 +70,21 @@ app.get('/api/challenges/:id/responses', (req, res) => {
 
 
 app.post('/api/responses', (req, res) => {
-    //TODO: verify body using joi
+    //validating request body using joi
+    const schema = Joi.object({
+        sawal: Joi.string().required(),
+        jawab: Joi.string().required()
+    })
+
+    const {error, value} = schema.validate(req.body, { abortEarly: false });     //result obj destructured for result.error and result.value
+
+    if(error){
+        const messages = error.details.map(err => err.message).join(", ");
+        return res.status(400).send(messages)
+    }
 
     const newId = Date.now().toString();
-    const newResponse = {id: newId, text: req.body.jawab, challengeId: req.body.sawal, rating:0, votes:0}
+    const newResponse = {id: newId, text: value.jawab, challengeId: value.sawal, rating:0, votes:0}
 
     fs.readFile("./data/responses.json", (error, data) => {
         if(error){
@@ -129,7 +140,17 @@ app.delete('/api/responses/:id', (req, res) => {
 
 
 app.patch('/api/responses/:id', (req, res) => {
-    //TODO: validate the body using joi
+    //validating the body using joi
+    const schema = Joi.object({
+        rating: Joi.number().min(1).max(5).required()
+    })
+
+    const {error, value} = schema.validate(req.body, { abortEarly: false });     //result obj destructured for result.error and result.value
+
+    if(error){
+        const messages = error.details.map(err => err.message).join(", ");
+        return res.status(400).send(messages)
+    }
 
     fs.readFile("./data/responses.json", (error, data) => {
         if(error){
@@ -142,7 +163,8 @@ app.patch('/api/responses/:id', (req, res) => {
                 const responseToUpdate = responses.find(r => r.id === req.params.id)
 
                 if(responseToUpdate !== undefined) {
-                    responseToUpdate.rating = (responseToUpdate.rating * responseToUpdate.votes + req.body.rating) / (responseToUpdate.votes + 1);
+                    const accurateRating = (responseToUpdate.rating * responseToUpdate.votes + value.rating) / (responseToUpdate.votes + 1);
+                    responseToUpdate.rating = parseFloat(accurateRating.toFixed(1))
                     responseToUpdate.votes += 1;
                     
                     //writing all to same file
