@@ -140,10 +140,17 @@
     "votes": 4
   },
   {
-    "id": "1752603499374",
+    "id": "1752610349249",
     "text": "something (noun): a something",
     "challengeId": "1720893721007",
-    "rating": 3.3,
-    "votes": 3
+    "rating": 3,
+    "votes": 2
+  },
+  {
+    "id": "1752610981365",
+    "text": "something (noun): a something else",
+    "challengeId": "1720893721007",
+    "rating": 0,
+    "votes": 0
   }
 ]
