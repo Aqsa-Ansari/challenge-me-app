@@ -11,14 +11,14 @@ router.get('/random', (req, res) => {
     //reading and parsing all challenges from the json file
     fs.readFile("./data/challenges.json", (error, data) => {
         if(error){
-           return res.status(500).send("Can't read data file")      //return to the rest is not executed
+           return res.status(500).send("Failed to read data file")      //return so the rest of the is not executed
         }
         else {
             const challenges = JSON.parse(data);
 
             if(challenges.length > 0){
                 const randomChallenge = pickRandom(challenges);
-                console.log("Random challenge: ", randomChallenge)
+                // console.log("Random challenge: ", randomChallenge)
                 return res.status(200).send(randomChallenge)
             }
             else {

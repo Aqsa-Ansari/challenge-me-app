@@ -9,10 +9,11 @@ const app = express();
 app.use(express.json());
 
 const allowedOrigins = [
-  "http://localhost:5500",
-  "http://127.0.0.1:5500",
-  // "https://your-deployed-site.com"
-];
+  process.env.ALLOWED_ORIGIN_LOCALHOST,
+  process.env.ALLOWED_ORIGIN_IP,
+  process.env.ALLOWED_ORIGIN_DEPLOYED,
+  "http://127.0.0.1:5500"
+].filter(Boolean); // remove any undefined ones
 
 app.use(cors({
   origin: function (origin, callback) {

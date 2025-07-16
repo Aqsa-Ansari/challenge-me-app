@@ -66,8 +66,8 @@
     "id": "1720893801010",
     "challengeId": "1720893721005",
     "text": "A workspace surrounded by books, soft echoes, and forest breeze.",
-    "rating": 5,
-    "votes": 3
+    "rating": 4.8,
+    "votes": 4
   },
   {
     "id": "1720893801011",
@@ -80,8 +80,8 @@
     "id": "1720893801012",
     "challengeId": "1720893721006",
     "text": "\"You have crumbs in your slot,\" the cat purred. \"And you have fur in my gears!\"",
-    "rating": 3,
-    "votes": 1
+    "rating": 3.5,
+    "votes": 2
   },
   {
     "id": "1720893801013",
@@ -101,8 +101,8 @@
     "id": "1720893801015",
     "challengeId": "1720893721008",
     "text": "Humans experience 'boredom' when stimulus levels drop below optimal function.",
-    "rating": 5,
-    "votes": 4
+    "rating": 4.8,
+    "votes": 5
   },
   {
     "id": "1720893801016",
@@ -140,9 +140,37 @@
     "votes": 4
   },
   {
-    "id": "1752673101710",
+    "id": "1752701661799",
+    "text": "very polite",
+    "challengeId": "1720893721010",
+    "rating": 0,
+    "votes": 0
+  },
+  {
+    "id": "1752701765937",
+    "text": "very bored",
+    "challengeId": "1720893721008",
+    "rating": 0,
+    "votes": 0
+  },
+  {
+    "id": "1752701792187",
     "text": "an awesome poem",
-    "challengeId": "1720893721003",
+    "challengeId": "1720893721008",
+    "rating": 0,
+    "votes": 0
+  },
+  {
+    "id": "1752701911549",
+    "text": "it feels like nothing at all",
+    "challengeId": "1720893721006",
+    "rating": 0,
+    "votes": 0
+  },
+  {
+    "id": "1752701995202",
+    "text": "you hot",
+    "challengeId": "1720893721006",
     "rating": 0,
     "votes": 0
   }

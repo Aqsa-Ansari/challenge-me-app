@@ -23,7 +23,8 @@ router.get('/:challengeId', (req, res) => {
             //filtering the resonses with have the asked challenged id
             const filteredResponses = responses.filter(response => response.challengeId === req.params.challengeId)  //parseInt(req.params.key) if the value is integer 
             
-            return res.status(200).send(filteredResponses)
+                // console.log("Responsese against a challenge id: ", filteredResponses)
+                return res.status(200).send(filteredResponses)
         }
     })  
 })
@@ -53,7 +54,7 @@ router.post('/', (req, res) => {
                 if (err) {
                     return res.status(500).send("Failed to write to data file")
                 } else {
-                    console.log("New response: ", newResponse)
+                    // console.log("New response: ", newResponse)
                     return res.status(200).send(newResponse)
                 }
             });

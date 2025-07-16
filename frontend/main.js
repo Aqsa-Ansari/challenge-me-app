@@ -1,44 +1,56 @@
 const baseURL = "http://localhost:5000"
 let currentChallengeId = null;
 
-async function getChallenge(){
-    // const challenge = {text: "write a poem"}     //dummy
-    
+async function getChallenge(){    
     //GET challenge using API
     try{
         const result = await fetch(`${baseURL}/api/challenges/random`);
-        const challenge = await result.json()
 
-        console.log("Random challenge received: ", challenge)
-        currentChallengeId = challenge.id
+        if (result.ok) {
+            const challenge = await result.json()
 
-        const challengeTextPara = document.createElement("p");
-        challengeTextPara.textContent = challenge.text;
+            console.log("Random challenge received: ", challenge)
+            currentChallengeId = challenge.id
 
-        const mainElement = document.querySelector("main");
-        mainElement.insertBefore(challengeTextPara, mainElement.firstChild)
+            const mainElement = document.querySelector("main");
 
+            // Remove old elements if any
+            document.querySelector("#challengeText")?.remove();
+            document.querySelector("#responseForm")?.remove();
 
-        // creating form for responses
-        const responseFormElement = document.createElement("form");
-        responseFormElement.setAttribute("action", "javascript:void(0)");
-        responseFormElement.setAttribute("method", "POST");
-        responseFormElement.addEventListener("submit", submitResponse);
+            // Add challenge
+            const challengeTextPara = document.createElement("p");
+            challengeTextPara.id = "challengeText";
+            challengeTextPara.textContent = challenge.text;
+            mainElement.insertBefore(challengeTextPara, mainElement.firstChild);
 
-        const textareaElement = document.createElement("input")
-        textareaElement.setAttribute("name", "responseTextarea");
-        textareaElement.setAttribute("type", "text");
+            // Add form for responses
+            const responseFormElement = document.createElement("form");
+            responseFormElement.id = "responseForm";
+            responseFormElement.setAttribute("action", "javascript:void(0)");
+            responseFormElement.setAttribute("method", "POST");
+            responseFormElement.addEventListener("submit", submitResponse);
 
-        const submitBtnElement = document.createElement("input");
-        submitBtnElement.setAttribute("type", "submit");
+            const textareaElement = document.createElement("input");
+            textareaElement.setAttribute("name", "responseTextarea");
+            textareaElement.setAttribute("type", "text");
 
-        responseFormElement.appendChild(textareaElement);
-        responseFormElement.appendChild(submitBtnElement);
+            const submitBtnElement = document.createElement("input");
+            submitBtnElement.setAttribute("type", "submit");
 
-        document.querySelector("main").appendChild(responseFormElement);
+            responseFormElement.appendChild(textareaElement);
+            responseFormElement.appendChild(submitBtnElement);
+
+            mainElement.appendChild(responseFormElement);
+        }
+        else {
+            console.log("Not OK result from API: ", result.status, await result.text())
+            //TODO: show reason
+        }
     }
     catch(error) {
-        console.log("Failed to call api ", error)
+        console.log("GET random challenge API call failed ", error)
+        //TODO: show api call failed
     }
 }
 
@@ -54,9 +66,9 @@ async function submitResponse(event) {
         "jawab": responseText
     }
 
-    console.log("Response body to send: ", responseObj)
+    // console.log("Response body to send: ", responseObj)
     
-    //POST response via api
+    //POST response using API
     try {
         const result = await fetch(`${baseURL}/api/responses`, {
             method: "POST",
@@ -66,73 +78,149 @@ async function submitResponse(event) {
             body: JSON.stringify(responseObj)
         });
         
-        const newResponse = await result.json();
-        
-        console.log("New Response saved: ", newResponse)
+        // Remove old elements if any
+            document.querySelector("#delResBtn")?.remove();
+            document.querySelector("#seeResBtn")?.remove();
+            document.querySelector("#responseslist")?.remove();
 
-        formElement.responseTextarea.value = ""
+        if (result.ok) {
+            const newResponse = await result.json();
+            console.log("New Response saved: ", newResponse)
     
-        //adding action buttons after response is submitted
-        const deleteResponseBtnElement = document.createElement("button");
-        deleteResponseBtnElement.textContent = "Delete my response"
-        deleteResponseBtnElement.addEventListener("click", () => deleteResponse(newResponse.id))
-    
-        const seeResponsesBtnElement = document.createElement("button");
-        seeResponsesBtnElement.textContent = "See others' responses"
-        seeResponsesBtnElement.addEventListener("click", seeResonses)   //doesn't send args 
-    
-        document.querySelector("main").appendChild(deleteResponseBtnElement)
-        document.querySelector("main").appendChild(seeResponsesBtnElement)
-    
-        //TODO: show alert that it's submitted
+            formElement.responseTextarea.value = ""
+        
+            //adding action buttons after response is submitted
+            const deleteResponseBtnElement = document.createElement("button");
+            deleteResponseBtnElement.id = "delResBtn"
+            deleteResponseBtnElement.textContent = "Delete my response"
+            deleteResponseBtnElement.addEventListener("click", () => deleteResponse(newResponse.id))
+        
+            const seeResponsesBtnElement = document.createElement("button");
+            seeResponsesBtnElement.id = "seeResBtn"
+            seeResponsesBtnElement.textContent = "See others' responses"
+            seeResponsesBtnElement.addEventListener("click", () => seeResonses(newResponse.id))
+        
+            document.querySelector("main").appendChild(deleteResponseBtnElement)
+            document.querySelector("main").appendChild(seeResponsesBtnElement)
+        
+            //TODO: show that it's submitted
+        }
+        else {
+            console.log("Not OK result from API: ", result.status, await result.text())
+            //TODO: show reason
+        }
     }
     catch(error){
-        console.log("error", error)
+        console.log("POST submit response API call failed ", error)
+        //TODO: show api call failed
     }
 }
 
 
 async function deleteResponse(responseId){
-    console.log("delete response called to delete response with ", responseId)
-    //DELETE response with responseId
+    //DELETE response with responseId using API
+    try {
+        const result = await fetch(`${baseURL}/api/responses/${responseId}`, {
+            method: "DELETE"
+        });
+        
+        if(result.ok){
+            //TODO: show response is deleted
 
-    alert("response is deleted")
+            //disable the button which called this method
+            const delResBtnElem = document.querySelector("#delResBtn")
+            delResBtnElem.disabled = true
+        }
+        console.log("Last submitted response deleted: ", await result.text())
+    }
+    catch (error) {
+        console.log("DELETE response by responseId API call failed ", error)
+        //TODO: show api call failed
+    }
 }
 
 
-async function seeResonses(){
-    console.log("see others' responses is called")
-
-    //GET all responses of other people from backend
-    let responses = [
-        {id: "rr1", text:"fasf", rating: 4},
-        {id: "rr2", text:"awrq", rating: 2},
-        {id: "rr3", text:"fawr", rating: 0},
-        {id: "rr4", text:"3256", rating: 1}
-    ]
+async function seeResonses(responseId){
+    //GET all responses of same challenge using API
+    try{
+        const result = await fetch(`${baseURL}/api/responses/${currentChallengeId}`)
+        if (result.ok){
+            const responses = await result.json()
     
-    //dynamic rendering fetched responses
-    let responsesListElement = document.createElement("div");
+            console.log("All responses for same challenge retrieved: ", responses)
+            
+            //dynamic rendering fetched responses
+            let responsesListElement = document.createElement("div");
+            responsesListElement.id = "responseslist"
+    
+            //TODO: filter out their own response with responseId
+            const filteredResponses = responses.filter(r => r.id !== responseId);
+                
 
-    responses.map((response) => {
-        let responseElement = document.createElement("div");
-        responseElement.textContent = response.text + response.rating
+            {filteredResponses.length > 0 ? 
+                filteredResponses.map((response) => {
+                    let responseElement = document.createElement("div");
+                    responseElement.textContent = response.text + response.rating
+                    
+                    let ratingBtnElement = document.createElement("button")
+                    ratingBtnElement.id =  `rbtn_${response.id}`
+                    ratingBtnElement.textContent = "give rating 3"      //TODO: put stars instead from tailwind
+                    ratingBtnElement.addEventListener("click", () => giveRating(response.id, 4))
         
-        let ratingBtnElement = document.createElement("button")
-        ratingBtnElement.textContent = "give rating 3"      //TODO: put stars instead from tailwind
-        ratingBtnElement.addEventListener("click", () => giveRating(response.id, 4))
+                    responseElement.appendChild(ratingBtnElement)
+        
+                    responsesListElement.appendChild(responseElement);
+                }) 
+                : 
+                responsesListElement.textContent = "No responses posted for this challenge yet"      
+            }
+            document.querySelector("main").appendChild(responsesListElement);
 
-        responseElement.appendChild(ratingBtnElement)
-
-        responsesListElement.appendChild(responseElement);
-    })
-
-    document.querySelector("main").appendChild(responsesListElement);
+            //disable the button which called this method
+            const seeResBtnElem = document.querySelector("#seeResBtn")
+            seeResBtnElem.disabled = true
+        }
+        else {
+            console.log("Not OK result from API: ", result.status, await result.text())
+            //TODO: show reason
+        }
+    }
+    catch (error) {
+        console.log("GET responses against a challenge API call failed ", error)
+        //TODO: show api call failed
+    }
 }
 
 
 async function giveRating(responseId, rating) {
-    console.log("update rating called")
+    //UPDATE rating in a response by responseId using API
+    try{
+        const result = await fetch(`${baseURL}/api/responses/${responseId}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                rating: rating
+            })
+        })
+    
+        if(result.ok){
+            const updatedResponse = await result.json()
+            console.log("Response updated: ", updatedResponse)
+            //TODO: show that rating is recorded
 
-    //UPDATE rating in a specific response in backend
+            //disable the button which called this method
+            const ratingBtnElem = document.querySelector(`#rbtn_${responseId}`)
+            ratingBtnElem.disabled = true
+        }
+        else {
+            console.log("Not OK result from API: ", result.status, await result.text())
+            //TODO: show reason
+        }
+    }
+    catch (error) {
+        console.log("PATCH response API call failed ", error)
+        //TODO: show api call failed
+    }
 }
