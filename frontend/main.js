@@ -1,70 +1,94 @@
+const baseURL = "http://localhost:5000"
+let currentChallengeId = null;
+
 async function getChallenge(){
-    const challenge = {text:"write a poem"}     //dummy
+    // const challenge = {text: "write a poem"}     //dummy
     
-    //GET challenge from backend
+    //GET challenge using API
+    try{
+        const result = await fetch(`${baseURL}/api/challenges/random`);
+        const challenge = await result.json()
 
-    console.log(challenge.text)
+        console.log("Random challenge received: ", challenge)
+        currentChallengeId = challenge.id
 
-    const challengeTextPara = document.createElement("p");
-    challengeTextPara.textContent = challenge.text;
+        const challengeTextPara = document.createElement("p");
+        challengeTextPara.textContent = challenge.text;
 
-    const mainElement = document.querySelector("main");
-    mainElement.insertBefore(challengeTextPara, mainElement.firstChild)
+        const mainElement = document.querySelector("main");
+        mainElement.insertBefore(challengeTextPara, mainElement.firstChild)
 
 
-    // creating form for resonses
-    const responseFormElement = document.createElement("form");
-    responseFormElement.addEventListener("submit", () => submitResponse(event));
+        // creating form for responses
+        const responseFormElement = document.createElement("form");
+        responseFormElement.setAttribute("action", "javascript:void(0)");
+        responseFormElement.setAttribute("method", "POST");
+        responseFormElement.addEventListener("submit", submitResponse);
 
-    const textareaElement = document.createElement("input")
-    textareaElement.setAttribute("name", "responseTextarea");
-    textareaElement.setAttribute("type", "text");
+        const textareaElement = document.createElement("input")
+        textareaElement.setAttribute("name", "responseTextarea");
+        textareaElement.setAttribute("type", "text");
 
-    const submitBtnElement = document.createElement("input");
-    submitBtnElement.setAttribute("type", "submit");
+        const submitBtnElement = document.createElement("input");
+        submitBtnElement.setAttribute("type", "submit");
 
-    responseFormElement.appendChild(textareaElement);
-    responseFormElement.appendChild(submitBtnElement);
+        responseFormElement.appendChild(textareaElement);
+        responseFormElement.appendChild(submitBtnElement);
 
-    document.querySelector("main").appendChild(responseFormElement);
+        document.querySelector("main").appendChild(responseFormElement);
+    }
+    catch(error) {
+        console.log("Failed to call api ", error)
+    }
 }
 
 async function submitResponse(event) {
-    event.preventDefault();
+    event.preventDefault()
 
-    // const responseText = document.querySelector('input[name="responseTextarea"]').value;
-    //// OR
-    // const responseTextareaElement = document.getElementsByName('responseTextarea')[0];
-    // const responseText = responseTextareaElement.value;
-    //// OR
     const formElement = document.querySelector("form")
     const formData = new FormData(formElement)
     const responseText = formData.get("responseTextarea");
     
-    console.log(responseText)
-    //POST response to backend, receives a responseid back
-    let responseId = "r1";
+    const responseObj = {
+        "sawal": currentChallengeId,
+        "jawab": responseText
+    }
 
-    // document.querySelector('input[name="responseTextarea"]').value = "";
-    //// OR
-    // document.getElementsByName('responseTextarea')[0].value = "";
-    //// OR
-    formElement.responseTextarea.value = "";
+    console.log("Response body to send: ", responseObj)
+    
+    //POST response via api
+    try {
+        const result = await fetch(`${baseURL}/api/responses`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(responseObj)
+        });
+        
+        const newResponse = await result.json();
+        
+        console.log("New Response saved: ", newResponse)
 
-
-    //adding action buttons after response is submitted
-    const deleteResponseBtnElement = document.createElement("button");
-    deleteResponseBtnElement.textContent = "Delete my response"
-    deleteResponseBtnElement.addEventListener("click", () => deleteResponse(responseId))
-
-    const seeResponsesBtnElement = document.createElement("button");
-    seeResponsesBtnElement.textContent = "See others' responses"
-    seeResponsesBtnElement.addEventListener("click", seeResonses)   //doesn't send args 
-
-    document.querySelector("main").appendChild(deleteResponseBtnElement)
-    document.querySelector("main").appendChild(seeResponsesBtnElement)
-
-    alert("response is submitted")
+        formElement.responseTextarea.value = ""
+    
+        //adding action buttons after response is submitted
+        const deleteResponseBtnElement = document.createElement("button");
+        deleteResponseBtnElement.textContent = "Delete my response"
+        deleteResponseBtnElement.addEventListener("click", () => deleteResponse(newResponse.id))
+    
+        const seeResponsesBtnElement = document.createElement("button");
+        seeResponsesBtnElement.textContent = "See others' responses"
+        seeResponsesBtnElement.addEventListener("click", seeResonses)   //doesn't send args 
+    
+        document.querySelector("main").appendChild(deleteResponseBtnElement)
+        document.querySelector("main").appendChild(seeResponsesBtnElement)
+    
+        //TODO: show alert that it's submitted
+    }
+    catch(error){
+        console.log("error", error)
+    }
 }
 
 

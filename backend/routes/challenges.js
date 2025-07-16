@@ -18,6 +18,7 @@ router.get('/random', (req, res) => {
 
             if(challenges.length > 0){
                 const randomChallenge = pickRandom(challenges);
+                console.log("Random challenge: ", randomChallenge)
                 return res.status(200).send(randomChallenge)
             }
             else {

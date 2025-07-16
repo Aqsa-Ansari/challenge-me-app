@@ -53,7 +53,8 @@ router.post('/', (req, res) => {
                 if (err) {
                     return res.status(500).send("Failed to write to data file")
                 } else {
-                    return res.status(200).send(newId)
+                    console.log("New response: ", newResponse)
+                    return res.status(200).send(newResponse)
                 }
             });
         }
