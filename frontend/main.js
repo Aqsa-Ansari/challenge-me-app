@@ -38,40 +38,46 @@ function submitResponse(event) {
     const formData = new FormData(formElement)
     const responseText = formData.get("responseTextarea");
     
-    //TODO: make sure response text not empty
+    //client-side form validation
+    if(responseText == ""){
+        //TODO: show response box is empty toast
+
+        console.log("response box is empty")
+        return
+    }
+
     const responseObj = {
         "sawal": currentChallengeId,
         "jawab": responseText
     }
-
     // console.log("Response body to send: ", responseObj)
     
     //POST response using API
-        postResponseAPI(responseObj)
-        .then(async result => {
-            // Remove old elements if any
-            removeResponseOptions()
-    
-            if (result.ok) {
-                const newResponse = await result.json();
-                console.log("New Response saved: ", newResponse)
-        
-                formElement.responseTextarea.value = ""
-            
-                //adding action buttons after response is submitted
-                renderResponseOptions(newResponse, deleteResponse, seeResonses)
+    postResponseAPI(responseObj)
+    .then(async result => {
+        // Remove old elements if any
+        removeResponseOptions()
 
-                //TODO: show that it's submitted
-            }
-            else {
-                console.log("Not OK result from API: ", result.status, await result.text())
-                //TODO: show reason
-            }
-        })
-        .catch(error => {
-            console.log("POST submit response API call failed ", error)
-            //TODO: show api call failed
-        })
+        if (result.ok) {
+            const newResponse = await result.json();
+            console.log("New Response saved: ", newResponse)
+    
+            formElement.responseTextarea.value = ""
+        
+            //adding action buttons after response is submitted
+            renderResponseOptions(newResponse, deleteResponse, seeResonses)
+
+            //TODO: show that it's submitted
+        }
+        else {
+            console.log("Not OK result from API: ", result.status, await result.text())
+            //TODO: show reason
+        }
+    })
+    .catch(error => {
+        console.log("POST submit response API call failed ", error)
+        //TODO: show api call failed
+    })
 }
 
 
@@ -104,10 +110,10 @@ function seeResonses(responseId) {
     
             console.log("All responses for same challenge retrieved: ", responses)
             
-            //TODO: filter out their own response with responseId
+            //filter out their own response with responseId
             const filteredResponses = responses.filter(r => r.id !== responseId);
             
-            //dynamic rendering fetched responses if any
+            //dynamic render fetched responses if any
             renderResponsesList(filteredResponses, giveRating)
 
             //disable the button which called this method
