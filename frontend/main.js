@@ -1,10 +1,16 @@
-const baseURL = "http://localhost:5000"
+import { getRandomChallengeAPI } from "./api/challengesAPI.js";
+import { postResponseAPI, deleteResponseAPI, getResponsesByChallengeAPI, patchResponseAPI } from './api/responsesAPI.js';
+import { renderChallenge } from "./dom/renderChallenge.js"
+import { removeResponseOptions, renderResponseOptions, renderResponsesList } from "./dom/renderResponses.js";
+
 let currentChallengeId = null;
 
-async function getChallenge(){    
-    //GET challenge using API
+document.querySelector("#startBtn").addEventListener("click", getChallenge);
+
+async function getChallenge() { 
+    //GET a random challenge
     try{
-        const result = await fetch(`${baseURL}/api/challenges/random`);
+        const result = await getRandomChallengeAPI();
 
         if (result.ok) {
             const challenge = await result.json()
@@ -12,36 +18,7 @@ async function getChallenge(){
             console.log("Random challenge received: ", challenge)
             currentChallengeId = challenge.id
 
-            const mainElement = document.querySelector("main");
-
-            // Remove old elements if any
-            document.querySelector("#challengeText")?.remove();
-            document.querySelector("#responseForm")?.remove();
-
-            // Add challenge
-            const challengeTextPara = document.createElement("p");
-            challengeTextPara.id = "challengeText";
-            challengeTextPara.textContent = challenge.text;
-            mainElement.insertBefore(challengeTextPara, mainElement.firstChild);
-
-            // Add form for responses
-            const responseFormElement = document.createElement("form");
-            responseFormElement.id = "responseForm";
-            responseFormElement.setAttribute("action", "javascript:void(0)");
-            responseFormElement.setAttribute("method", "POST");
-            responseFormElement.addEventListener("submit", submitResponse);
-
-            const textareaElement = document.createElement("input");
-            textareaElement.setAttribute("name", "responseTextarea");
-            textareaElement.setAttribute("type", "text");
-
-            const submitBtnElement = document.createElement("input");
-            submitBtnElement.setAttribute("type", "submit");
-
-            responseFormElement.appendChild(textareaElement);
-            responseFormElement.appendChild(submitBtnElement);
-
-            mainElement.appendChild(responseFormElement);
+            renderChallenge(challenge, submitResponse)
         }
         else {
             console.log("Not OK result from API: ", result.status, await result.text())
@@ -54,13 +31,14 @@ async function getChallenge(){
     }
 }
 
-async function submitResponse(event) {
+function submitResponse(event) {
     event.preventDefault()
 
     const formElement = document.querySelector("form")
     const formData = new FormData(formElement)
     const responseText = formData.get("responseTextarea");
     
+    //TODO: make sure response text not empty
     const responseObj = {
         "sawal": currentChallengeId,
         "jawab": responseText
@@ -69,112 +47,68 @@ async function submitResponse(event) {
     // console.log("Response body to send: ", responseObj)
     
     //POST response using API
-    try {
-        const result = await fetch(`${baseURL}/api/responses`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(responseObj)
-        });
-        
-        // Remove old elements if any
-            document.querySelector("#delResBtn")?.remove();
-            document.querySelector("#seeResBtn")?.remove();
-            document.querySelector("#responseslist")?.remove();
-
-        if (result.ok) {
-            const newResponse = await result.json();
-            console.log("New Response saved: ", newResponse)
+        postResponseAPI(responseObj)
+        .then(async result => {
+            // Remove old elements if any
+            removeResponseOptions()
     
-            formElement.responseTextarea.value = ""
+            if (result.ok) {
+                const newResponse = await result.json();
+                console.log("New Response saved: ", newResponse)
         
-            //adding action buttons after response is submitted
-            const deleteResponseBtnElement = document.createElement("button");
-            deleteResponseBtnElement.id = "delResBtn"
-            deleteResponseBtnElement.textContent = "Delete my response"
-            deleteResponseBtnElement.addEventListener("click", () => deleteResponse(newResponse.id))
-        
-            const seeResponsesBtnElement = document.createElement("button");
-            seeResponsesBtnElement.id = "seeResBtn"
-            seeResponsesBtnElement.textContent = "See others' responses"
-            seeResponsesBtnElement.addEventListener("click", () => seeResonses(newResponse.id))
-        
-            document.querySelector("main").appendChild(deleteResponseBtnElement)
-            document.querySelector("main").appendChild(seeResponsesBtnElement)
-        
-            //TODO: show that it's submitted
-        }
-        else {
-            console.log("Not OK result from API: ", result.status, await result.text())
-            //TODO: show reason
-        }
-    }
-    catch(error){
-        console.log("POST submit response API call failed ", error)
-        //TODO: show api call failed
-    }
+                formElement.responseTextarea.value = ""
+            
+                //adding action buttons after response is submitted
+                renderResponseOptions(newResponse, deleteResponse, seeResonses)
+
+                //TODO: show that it's submitted
+            }
+            else {
+                console.log("Not OK result from API: ", result.status, await result.text())
+                //TODO: show reason
+            }
+        })
+        .catch(error => {
+            console.log("POST submit response API call failed ", error)
+            //TODO: show api call failed
+        })
 }
 
 
-async function deleteResponse(responseId){
+function deleteResponse(responseId) {
     //DELETE response with responseId using API
-    try {
-        const result = await fetch(`${baseURL}/api/responses/${responseId}`, {
-            method: "DELETE"
-        });
-        
+    deleteResponseAPI(responseId)
+    .then(async result => {
         if(result.ok){
             //TODO: show response is deleted
-
+    
             //disable the button which called this method
             const delResBtnElem = document.querySelector("#delResBtn")
             delResBtnElem.disabled = true
         }
         console.log("Last submitted response deleted: ", await result.text())
-    }
-    catch (error) {
+    })
+    .catch (error => {
         console.log("DELETE response by responseId API call failed ", error)
         //TODO: show api call failed
-    }
+    })
 }
 
 
-async function seeResonses(responseId){
+function seeResonses(responseId) {
     //GET all responses of same challenge using API
-    try{
-        const result = await fetch(`${baseURL}/api/responses/${currentChallengeId}`)
+    getResponsesByChallengeAPI(currentChallengeId)
+    .then(async result => {
         if (result.ok){
             const responses = await result.json()
     
             console.log("All responses for same challenge retrieved: ", responses)
             
-            //dynamic rendering fetched responses
-            let responsesListElement = document.createElement("div");
-            responsesListElement.id = "responseslist"
-    
             //TODO: filter out their own response with responseId
             const filteredResponses = responses.filter(r => r.id !== responseId);
-                
-
-            {filteredResponses.length > 0 ? 
-                filteredResponses.map((response) => {
-                    let responseElement = document.createElement("div");
-                    responseElement.textContent = response.text + response.rating
-                    
-                    let ratingBtnElement = document.createElement("button")
-                    ratingBtnElement.id =  `rbtn_${response.id}`
-                    ratingBtnElement.textContent = "give rating 3"      //TODO: put stars instead from tailwind
-                    ratingBtnElement.addEventListener("click", () => giveRating(response.id, 4))
-        
-                    responseElement.appendChild(ratingBtnElement)
-        
-                    responsesListElement.appendChild(responseElement);
-                }) 
-                : 
-                responsesListElement.textContent = "No responses posted for this challenge yet"      
-            }
-            document.querySelector("main").appendChild(responsesListElement);
+            
+            //dynamic rendering fetched responses if any
+            renderResponsesList(filteredResponses, giveRating)
 
             //disable the button which called this method
             const seeResBtnElem = document.querySelector("#seeResBtn")
@@ -184,32 +118,25 @@ async function seeResonses(responseId){
             console.log("Not OK result from API: ", result.status, await result.text())
             //TODO: show reason
         }
-    }
-    catch (error) {
+    })
+    .catch (error => {
         console.log("GET responses against a challenge API call failed ", error)
         //TODO: show api call failed
-    }
+    })
 }
 
 
-async function giveRating(responseId, rating) {
+function giveRating(responseId, rating) {
     //UPDATE rating in a response by responseId using API
-    try{
-        const result = await fetch(`${baseURL}/api/responses/${responseId}`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
+    patchResponseAPI(responseId, {
                 rating: rating
             })
-        })
-    
+    .then(async result => {
         if(result.ok){
             const updatedResponse = await result.json()
             console.log("Response updated: ", updatedResponse)
             //TODO: show that rating is recorded
-
+    
             //disable the button which called this method
             const ratingBtnElem = document.querySelector(`#rbtn_${responseId}`)
             ratingBtnElem.disabled = true
@@ -218,9 +145,9 @@ async function giveRating(responseId, rating) {
             console.log("Not OK result from API: ", result.status, await result.text())
             //TODO: show reason
         }
-    }
-    catch (error) {
+    })
+    .catch (error => {
         console.log("PATCH response API call failed ", error)
         //TODO: show api call failed
-    }
+    })
 }

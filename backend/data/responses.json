@@ -95,7 +95,7 @@
     "challengeId": "1720893721007",
     "text": "Snarp (verb): To accidentally spill a drink while laughing.",
     "rating": 4,
-    "votes": 2
+    "votes": 3
   },
   {
     "id": "1720893801015",
@@ -138,40 +138,5 @@
     "text": "PoliteMan apologizes before kicking down doors. Crime rates drop anyway.",
     "rating": 5,
     "votes": 4
-  },
-  {
-    "id": "1752701661799",
-    "text": "very polite",
-    "challengeId": "1720893721010",
-    "rating": 0,
-    "votes": 0
-  },
-  {
-    "id": "1752701765937",
-    "text": "very bored",
-    "challengeId": "1720893721008",
-    "rating": 0,
-    "votes": 0
-  },
-  {
-    "id": "1752701792187",
-    "text": "an awesome poem",
-    "challengeId": "1720893721008",
-    "rating": 0,
-    "votes": 0
-  },
-  {
-    "id": "1752701911549",
-    "text": "it feels like nothing at all",
-    "challengeId": "1720893721006",
-    "rating": 0,
-    "votes": 0
-  },
-  {
-    "id": "1752701995202",
-    "text": "you hot",
-    "challengeId": "1720893721006",
-    "rating": 0,
-    "votes": 0
   }
 ]
