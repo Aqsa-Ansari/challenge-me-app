@@ -8,12 +8,13 @@ const responseRoutes = require("./routes/responses");
 const app = express();
 app.use(express.json());
 
-const allowedOrigins = [
-  process.env.ALLOWED_ORIGIN_LOCALHOST,
-  process.env.ALLOWED_ORIGIN_IP,
-  process.env.ALLOWED_ORIGIN_DEPLOYED,
-  "http://127.0.0.1:5500"
-].filter(Boolean); // remove any undefined ones
+const isDevelopment = process.env.NODE_ENV === "development";
+
+// Parse comma-separated list into an array
+const allowedOrigins = (process.env.ALLOWED_ORIGINS || "")
+  .split(",")
+  .map(origin => origin.trim())
+  .filter(Boolean);
 
 app.use(cors({
   origin: function (origin, callback) {
