@@ -91,6 +91,7 @@ function deleteResponse(responseId) {
             //disable the button which called this method
             const delResBtnElem = document.querySelector("#delResBtn")
             delResBtnElem.disabled = true
+            delResBtnElem.classList.add("opacity-50", "cursor-not-allowed");
         }
         console.log("Last submitted response deleted: ", await result.text())
     })
@@ -119,6 +120,7 @@ function seeResonses(responseId) {
             //disable the button which called this method
             const seeResBtnElem = document.querySelector("#seeResBtn")
             seeResBtnElem.disabled = true
+            seeResBtnElem.classList.add("opacity-50", "cursor-not-allowed");
         }
         else {
             console.log("Not OK result from API: ", result.status, await result.text())
