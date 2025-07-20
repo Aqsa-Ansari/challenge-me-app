@@ -7,5 +7,5 @@ export const ENV =
 
 export const API_BASE_URL =
   ENV === "dev"
-    ? "http://localhost:3000"
+    ? "http://localhost:5000"
     : "https://your-api.onrender.com";

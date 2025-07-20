@@ -134,7 +134,7 @@ function seeResonses(responseId) {
 
 function giveRating(responseId, rating) {
     //UPDATE rating in a response by responseId using API
-    patchResponseAPI(responseId, {
+    return patchResponseAPI(responseId, {
                 rating: rating
             })
     .then(async result => {
@@ -142,18 +142,17 @@ function giveRating(responseId, rating) {
             const updatedResponse = await result.json()
             console.log("Response updated: ", updatedResponse)
             //TODO: show that rating is recorded
-    
-            //disable the button which called this method
-            const ratingBtnElem = document.querySelector(`#rbtn_${responseId}`)
-            ratingBtnElem.disabled = true
+            return updatedResponse;
         }
         else {
             console.log("Not OK result from API: ", result.status, await result.text())
             //TODO: show reason
+            return null
         }
     })
     .catch (error => {
         console.log("PATCH response API call failed ", error)
         //TODO: show api call failed
+        return null
     })
 }
