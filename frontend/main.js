@@ -22,12 +22,12 @@ async function getChallenge() {
         }
         else {
             console.log("Not OK result from API: ", result.status, await result.text())
-            //TODO: show reason
+            showToast("Something went wrong!", "error");
         }
     }
     catch(error) {
         console.log("GET random challenge API call failed ", error)
-        //TODO: show api call failed
+        showToast("Network error occurred", "error");
     }
 }
 
@@ -40,7 +40,7 @@ function submitResponse(event) {
     
     //client-side form validation
     if(responseText == ""){
-        //TODO: show response box is empty toast
+        showToast("Please write your response to submit", "error");
 
         console.log("response box is empty")
         return
@@ -66,17 +66,16 @@ function submitResponse(event) {
         
             //adding action buttons after response is submitted
             renderResponseOptions(newResponse, deleteResponse, seeResonses)
-
-            //TODO: show that it's submitted
+            showToast("Submitted successfully!", "success");
         }
         else {
             console.log("Not OK result from API: ", result.status, await result.text())
-            //TODO: show reason
+            showToast("Something went wrong!", "error");
         }
     })
     .catch(error => {
         console.log("POST submit response API call failed ", error)
-        //TODO: show api call failed
+        showToast("Network error occurred", "error");
     })
 }
 
@@ -86,7 +85,7 @@ function deleteResponse(responseId) {
     deleteResponseAPI(responseId)
     .then(async result => {
         if(result.ok){
-            //TODO: show response is deleted
+            showToast("Deleted successfully!", "success");
     
             //disable the button which called this method
             const delResBtnElem = document.querySelector("#delResBtn")
@@ -97,7 +96,7 @@ function deleteResponse(responseId) {
     })
     .catch (error => {
         console.log("DELETE response by responseId API call failed ", error)
-        //TODO: show api call failed
+        showToast("Network error occurred", "error");
     })
 }
 
@@ -124,12 +123,12 @@ function seeResonses(responseId) {
         }
         else {
             console.log("Not OK result from API: ", result.status, await result.text())
-            //TODO: show reason
+            showToast("Something went wrong!", "error");
         }
     })
     .catch (error => {
         console.log("GET responses against a challenge API call failed ", error)
-        //TODO: show api call failed
+        showToast("Network error occurred", "error");
     })
 }
 
@@ -143,18 +142,44 @@ function giveRating(responseId, rating) {
         if(result.ok){
             const updatedResponse = await result.json()
             console.log("Response updated: ", updatedResponse)
-            //TODO: show that rating is recorded
+            showToast("Rating updated successfully!", "success");
             return updatedResponse;
         }
         else {
             console.log("Not OK result from API: ", result.status, await result.text())
-            //TODO: show reason
+            showToast("Something went wrong!", "error");
             return null
         }
     })
     .catch (error => {
         console.log("PATCH response API call failed ", error)
-        //TODO: show api call failed
+        showToast("Network error occurred", "error");
         return null
     })
+}
+
+
+function showToast(message, type = "success", duration = 3000) {
+    const toast = document.createElement("div");
+
+    const baseClasses =
+        "px-4 py-2 rounded shadow-md text-white text-sm flex items-center gap-2";
+    const typeClasses =
+        type === "success"
+            ? "bg-green-500"
+            : type === "error"
+            ? "bg-red-500"
+            : "bg-gray-700";
+
+    toast.className = `${baseClasses} ${typeClasses}`;
+    toast.innerHTML = `
+        <span>${message}</span>
+        <button class="ml-auto text-white hover:opacity-70" onclick="this.parentElement.remove()">×</button>
+    `;
+
+    document.getElementById("toast-container").appendChild(toast);
+
+    setTimeout(() => {
+        toast.remove();
+    }, duration);
 }
