@@ -1,4 +1,4 @@
-import { baseURL } from "../config.js";
+import { API_BASE_URL as baseURL } from "../config.js";
 
 const controllerURL = '/api/responses'
 

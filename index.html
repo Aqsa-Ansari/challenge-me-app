@@ -5,24 +5,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Challenge My App</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
 </head>
 
-<body>
-    <header>
-        <h1>Bored? Hit the button.</h1>
-        <button id="startBtn">Give me a challenge</button>
+<body class="flex flex-col min-h-screen">
+    <header class="text-center py-16 bg-gray-100 shadow-md">
+        <h1 class="text-4xl font-bold text-gray-800 drop-shadow-sm mb-6 tracking-tight">
+            Bored? Hit the button.
+        </h1>
+        <button id="startBtn"
+            class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition duration-200 font-medium shadow-sm">
+            Give me a challenge
+        </button>
     </header>
 
-    <main>
-
+    <main class="flex flex-col justify-center flex-grow">
+        <!-- Dynamic content goes here -->
     </main>
 
-    <footer>
+    <footer class="text-center text-sm text-gray-500 py-6">
         <p>
             Built during a bored afternoon. Now it’s your turn. <br>
             © 2025 Aqsa Ansari — to beat boredom.
         </p>
     </footer>
+
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 space-y-2"></div>
 
     <script type="module" src="main.js">
 
