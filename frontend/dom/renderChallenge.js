@@ -24,7 +24,7 @@ export function renderChallenge(challenge, submitResponse) {
   responseFormElement.addEventListener("submit", submitResponse);
 
   const textareaElement = document.createElement("textarea");
-  textareaElement.className = "w-full max-w-xl h-40 px-4 py-2 text-base border rounded resize-y";
+  textareaElement.className = "w-full max-w-xl h-40 px-4 py-2 text-base border rounded resize-y overflow-y-auto touch-auto";
   textareaElement.setAttribute("name", "responseTextarea");
   textareaElement.setAttribute("type", "text");
 
