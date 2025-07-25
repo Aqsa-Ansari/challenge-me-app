@@ -1,9 +1,8 @@
-const hostname = window.location.hostname;
+const localhosts = ["localhost", "127.0.0.1", "0.0.0.0"]
 
-export const ENV =
-  hostname === "localhost" || hostname === "127.0.0.1"
-    ? "dev"
-    : "prod";
+const isLocalhost = localhosts.includes(window?.location?.hostname);
+
+export const ENV = isLocalhost ? "dev" : "prod";
 
 export const API_BASE_URL =
   ENV === "dev"
