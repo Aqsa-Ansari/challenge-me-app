@@ -1,3 +1,5 @@
+import { log, error } from "../utils/logger.js";
+
 const buttonBaseClasses =
   "px-4 py-2 rounded text-sm font-medium transition duration-200";
 
@@ -143,8 +145,8 @@ const handleStarClick = (starBtn, rightContainer, responseId, giveRating, curren
             <span class="text-yellow-500 text-base">★</span>
             <span>${updatedResponse.rating.toFixed(1)}</span>
         `;
-        console.log(`Rated response ${responseId} with ${rating} stars`);
-
         alreadyRatedRef.value = true;
+
+        log(`Rated response ${responseId} with ${rating} stars`);
     };
 }
