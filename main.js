@@ -42,7 +42,7 @@ function submitResponse(event) {
     
     //client-side form validation
     if(responseText == ""){
-        showToast("Please write your response to submit", "error");
+        showToast("Please write your response to submit", "warn");
         warn("response box is empty")
         return
     }
@@ -75,7 +75,7 @@ function submitResponse(event) {
         }
     })
     .catch(error => {
-        log("POST submit response API call failed ", error)
+        error("POST submit response API call failed ", error)
         showToast("Network error occurred", "error");
     })
 }
